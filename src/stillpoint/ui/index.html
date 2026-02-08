@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Local Observability</title>
+  <link rel="stylesheet" href="/static/styles.css"/>
+</head>
+<body>
+  <header class="hdr">
+    <div class="row">
+      <div class="pill" id="status">connecting...</div>
+
+      <input id="q" placeholder="filter (service / endpoint / text)" size="32"/>
+      <select id="kind">
+        <option value="">all</option>
+        <option value="req">requests</option>
+        <option value="log">logs</option>
+      </select>
+      <select id="level">
+        <option value="">all levels</option>
+        <option>DEBUG</option><option>INFO</option><option>WARN</option><option>ERROR</option>
+      </select>
+
+      <button id="pause">pause</button>
+      <button id="clear">clear</button>
+      <span class="muted" id="meta"></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="grid">
+      <div class="card">
+        <div class="k">RPS (last 2m)</div>
+        <div class="v" id="rps">--</div>
+      </div>
+
+      <div class="card">
+        <div class="k">Error rate 5xx (last 2m)</div>
+        <div class="v" id="err5xx">--</div>
+      </div>
+
+      <div class="card">
+        <div class="k">p95 latency (last 2m)</div>
+        <div class="v" id="p95">--</div>
+      </div>
+
+      <div class="card">
+        <div class="k">In-flight requests</div>
+        <div class="v" id="inflight">--</div>
+        <div class="muted" id="statusb">--</div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="card">
+        <div class="k">Endpoints (2m window)</div>
+        <div class="btnrow">
+          <button data-sort="p95">top slow (p95)</button>
+          <button data-sort="error">top error (5xx)</button>
+          <button data-sort="rps">top rps</button>
+          <button data-sort="count">top count</button>
+          <span class="muted" id="latNotice"></span>
+        </div>
+        <div class="table" id="routes"></div>
+      </div>
+
+      <div class="card">
+        <div class="k">Top exception signatures (2m)</div>
+        <div class="muted">Deduped by exception + top frames</div>
+        <div class="table" id="sigs"></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="card">
+        <div class="k">Recent requests</div>
+        <div class="btnrow">
+          <label class="chk"><input type="checkbox" id="traceErrors"/> status >= 500</label>
+          <input id="traceMinDur" type="number" min="0" placeholder="min duration (ms)" />
+          <input id="traceFilter" placeholder="endpoint contains" size="24"/>
+        </div>
+        <div class="table" id="recent"></div>
+      </div>
+
+      <div class="card">
+        <div class="k">Top slow traces (2m)</div>
+        <div class="muted">Slowest individual requests in window</div>
+        <div class="table" id="slowtraces"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="k">Live stream</div>
+      <div class="table" id="stream"></div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="traceDrawer">
+    <div class="drawer-head">
+      <div>
+        <div class="k">Trace detail</div>
+        <div class="drawer-title" id="traceTitle">--</div>
+      </div>
+      <div class="row">
+        <button id="traceCopy">copy JSON</button>
+        <button id="traceDownload">download JSON</button>
+        <button id="traceClose">close</button>
+      </div>
+    </div>
+    <div class="drawer-body">
+      <div class="section">
+        <div class="k">Summary</div>
+        <div class="mono" id="traceSummary"></div>
+      </div>
+      <div class="section">
+        <div class="k">Timeline</div>
+        <div class="table" id="traceTimeline"></div>
+      </div>
+      <div class="section">
+        <div class="k">Duration breakdown</div>
+        <div class="table" id="traceBreakdown"></div>
+      </div>
+      <div class="section">
+        <div class="k">Logs</div>
+        <div class="table" id="traceLogs"></div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stillpoint"
+version = "0.1.2"
+readme="README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.23",
+  "pydantic>=2.0",
+  "requests>=2.31",
+]
+[project.urls]
+Homepage = "https://github.com/the-code-rider/stillpoint"
+Repository = "https://github.com/the-code-rider/stillpoint"
+
+[project.scripts]
+stillpoint = "stillpoint.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stillpoint"]
+package-dir = "src"
+
+# Include UI assets inside the installed package
+# [tool.hatch.build.targets.wheel.force-include]
+# "src/stillpoint/ui" = "stillpoint/ui"
