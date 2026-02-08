@@ -36,6 +36,9 @@ set OBS_TAIL_FROM_START=1
 stillpoint
 ```
 
+<img width="1859" height="979" alt="Screenshot 2026-02-09 015538" src="https://github.com/user-attachments/assets/18892bda-f742-45e9-b3dc-7cc75d70e2b2" />
+
+
 ## Usage scenarios
 
 ### Single service + live UI
